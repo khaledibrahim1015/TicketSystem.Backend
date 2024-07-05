@@ -1,4 +1,10 @@
 
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using TicketSystem.Core.Configuration;
+using TicketSystem.DAl;
+using TicketSystem.DAl.Extensions;
+
 namespace TicketSystem.API
 {
     public class Program
@@ -10,9 +16,19 @@ namespace TicketSystem.API
             // Add services to the container.
 
             builder.Services.AddControllers();
+
+            //  Register All Services from DependencyInjection Extensions 
+            builder.Services.AddServiceCollections(builder.Configuration);
+
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+
+
+
+
 
             var app = builder.Build();
 
