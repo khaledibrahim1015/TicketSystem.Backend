@@ -1,0 +1,13 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/TicketSystem.Backend/TicketSystem.API/bin/Debug/net8.0
+/TicketSystem.Backend/TicketSystem.API/obj/Debug/net8.0
+/TicketSystem.Backend/.vs/TicketSystem.Backend/config
+/TicketSystem.Backend/.vs/TicketSystem.Backend/DesignTimeBuild
+/TicketSystem.Backend/.vs/TicketSystem.Backend/FileContentIndex
+/TicketSystem.Backend/.vs/TicketSystem.Backend/v17
+/TicketSystem.Backend/TicketSystem.API/obj
+/TicketSystem.Backend/TicketSystem.Core/obj
+/TicketSystem.Backend/TicketSystem.DAl/obj
