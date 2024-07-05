@@ -11,3 +11,5 @@
 /TicketSystem.Backend/TicketSystem.API/obj
 /TicketSystem.Backend/TicketSystem.Core/obj
 /TicketSystem.Backend/TicketSystem.DAl/obj
+/TicketSystem.Backend/TicketSystem.Core/bin/Debug/net8.0
+/TicketSystem.Backend/TicketSystem.DAl/bin/Debug/net8.0
