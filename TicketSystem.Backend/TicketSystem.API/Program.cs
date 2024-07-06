@@ -1,8 +1,3 @@
-
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using TicketSystem.Core.Configuration;
-using TicketSystem.DAl;
 using TicketSystem.DAl.Extensions;
 
 namespace TicketSystem.API
@@ -16,20 +11,14 @@ namespace TicketSystem.API
             // Add services to the container.
 
             builder.Services.AddControllers();
-
-            //  Register All Services from DependencyInjection Extensions 
-            builder.Services.AddServiceCollections(builder.Configuration);
-
-
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-
-
-
-
-
+            //  Register All Services from DependencyInjection Extensions 
+            builder.Services.AddServiceCollections(builder.Configuration);
+            // Injecting Our MediatR In Our DI Conatiner 
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly));
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
