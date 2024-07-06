@@ -23,7 +23,7 @@ TicketSystem is designed to manage tickets with CRUD operations and includes fea
 
 - **CQRS and MediatR**: Commands and queries are separated, enhancing application structure.
 - **Repository Pattern**: Data access layer abstraction using interfaces for repositories.
-- **Background Service**: Automatic handling of overdue tickets using a background service.
+- **Background Service**: Automatic handling of overdue tickets using a background service.[Example BackgroundService](#example-BackgroundService)
 
 ## Design Patterns
 
@@ -43,7 +43,7 @@ TicketSystem is designed to manage tickets with CRUD operations and includes fea
 ## Setup and Configuration
 
 1. **Database Configuration**: Update the database connection string in `appsettings.json`.
-2. **Dependency Injection**: Configure services and dependencies in `Startup.cs`.
+2. **Dependency Injection**: Configure services  in `DependencyInjection.cs`. [Example Di](#example-Di)
 3. **AutoMapper Configuration**: Define AutoMapper profiles for mapping DTOs to domain models.
 
 ## Running the Application
@@ -55,9 +55,79 @@ To run the TicketSystem locally:
 3. Restore dependencies: `dotnet restore`
 4. Update database: `dotnet ef database update`
 5. Start the application: `dotnet run`
+## Example BackgroundService
+    public class TicketHandlingService : BackgroundService
+    {
+        private readonly IServiceProvider _serviceProvider;
+        private readonly ILogger<TicketHandlingService> _logger;
+        private readonly TimeSpan _checkInterval = TimeSpan.FromMinutes(1);
+
+        public TicketHandlingService(IServiceProvider serviceProvider, ILogger<TicketHandlingService> logger)
+        {
+            _serviceProvider = serviceProvider;
+            _logger = logger;
+        }
+
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                using (var scope = _serviceProvider.CreateScope())
+                {
+                    var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+
+                    try
+                    {
+                        var tickets = await unitOfWork.Tickets.FindAllAsync(t => !t.IsHandled);
+                        foreach (var ticket in tickets)
+                        {
+                            var timeSinceCreation = DateTime.UtcNow - ticket.CreationDate;
+                            if (timeSinceCreation >= TimeSpan.FromMinutes(60))
+                            {
+                                ticket.IsHandled = true;
+                            }
+                        }
+
+                        await unitOfWork.CompleteAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "An error occurred while handling tickets.");
+                    }
+
+                    await Task.Delay(_checkInterval, stoppingToken);
+                }
+            }
+        }
+    }
 
 ## Example Usage
+ public static class DependencyInjection
+ {
 
+     public static IServiceCollection AddServiceCollections (this IServiceCollection services , IConfiguration configuration)
+     {
+         // Configure AppSettings
+         services.Configure<AppSettings>(configuration.GetSection("AppSettings"));
+         // Register DbContext Using DbContextOptionsFactory 
+         services.AddSingleton<DbContextOptionsFactory>();
+         //  Register DbContext Using Factory 
+         services.AddScoped(serviceProvider =>
+         {
+             var OptionsFactory = serviceProvider.GetRequiredService<DbContextOptionsFactory>();
+             return new TicketDbContext(OptionsFactory.CreateDbContextOptions());
+         });
+         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+         //// Register other  services 
+         //services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+         //services.AddScoped<ITicketRepository , TicketRepository>();  
+         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+         // add ticket handling as a backgroundservice 
+         services.AddHostedService<TicketHandlingService>();
+         return services;
+     }
+     
 ### Creating a Ticket
 
 To create a ticket, send a POST request to `/api/tickets` with JSON body:
