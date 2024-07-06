@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TicketSystem.DAl;
+using TicketSystem.DAl.Data;
 
 #nullable disable
 
@@ -54,7 +54,7 @@ namespace TicketSystem.DAl.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tikcets");
+                    b.ToTable("Tikcets", (string)null);
                 });
 #pragma warning restore 612, 618
         }
