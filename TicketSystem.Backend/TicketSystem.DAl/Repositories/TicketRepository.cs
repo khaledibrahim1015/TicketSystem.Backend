@@ -14,7 +14,8 @@ namespace TicketSystem.DAl.Repositories
 
         public async Task<IEnumerable<Ticket>> GetPaginatedTicketsAsync(int pageNumber, int pageSize)
         {
-            return await _dbSet.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+            var x = await _dbSet.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+            return x;
         }
 
         public async Task<IEnumerable<Ticket>> GetPaginatedTicketsAsync(int pageNumber, int pageSize, Expression<Func<Ticket, object>> orderby = null, string orderbyDire = OrderBy.Ascending)

@@ -3,6 +3,7 @@ using MediatR;
 using TicketSystem.API.Queries;
 using TicketSystem.Core.DTOs.Responses;
 using TicketSystem.Core.Repositories;
+using TicketSystem.DAl.Services;
 
 namespace TicketSystem.API.Handlers
 {
@@ -20,28 +21,18 @@ namespace TicketSystem.API.Handlers
         public async Task<IEnumerable<GetTicketResponse>> Handle(GetAllTicketsPaginatedQuery request, CancellationToken cancellationToken)
         {
             var tickets = await _unitOfWork.Tickets.GetPaginatedTicketsAsync(request.PageNumber, request.PageSize);
-            var ticketResponses = _mapper.Map<IEnumerable<GetTicketResponse>>(tickets);
+            var ticketResponses = await Task.Run(() => _mapper.Map<IEnumerable<GetTicketResponse>>(tickets)); // Ensure mapping is awaited
 
             foreach (var ticketResponse in ticketResponses)
             {
-                ticketResponse.Color = GetTicketColor(ticketResponse.CreationDate);
+                ticketResponse.Color = TicketService.GetTicketColor(ticketResponse.CreationDate);
             }
 
             return ticketResponses;
         }
 
-        private string GetTicketColor(DateTime creationDate)
-        {
-            var ageInMinutes = (DateTime.UtcNow - creationDate).TotalMinutes;
 
-            if (ageInMinutes <= 15)
-                return "yellow";
-            else if (ageInMinutes <= 30)
-                return "green";
-            else if (ageInMinutes <= 45)
-                return "blue";
-            else
-                return "red";
-        }
+
+   
     }
 }

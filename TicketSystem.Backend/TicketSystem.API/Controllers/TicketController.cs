@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using TicketSystem.API.Commands;
 using TicketSystem.API.Queries;
 using TicketSystem.Core.DTOs.Requests;
+using TicketSystem.Core.DTOs.Responses;
 
 namespace TicketSystem.API.Controllers
 {
@@ -39,7 +40,7 @@ namespace TicketSystem.API.Controllers
         }
 
         [HttpGet("paginated")]
-        public async Task<IActionResult> GetPaginatedTickets([FromQuery] int pageNumber, [FromQuery] int pageSize)
+        public async Task<ActionResult<GetTicketResponse>> GetPaginatedTickets([FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
             var result = await _mediator.Send(new GetAllTicketsPaginatedQuery(pageNumber, pageSize));
             return Ok(result);
