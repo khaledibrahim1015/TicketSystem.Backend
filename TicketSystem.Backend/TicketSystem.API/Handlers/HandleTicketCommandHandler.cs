@@ -21,7 +21,7 @@ namespace TicketSystem.API.Handlers
             if (ticket != null)
             {
                 ticket.IsHandled = true;
-              return   await _unitOfWork.CompleteAsync();
+                return true; // await _unitOfWork.CompleteAsync();
             }
 
             return false;
