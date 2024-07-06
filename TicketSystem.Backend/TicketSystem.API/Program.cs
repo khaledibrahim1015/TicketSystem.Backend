@@ -22,10 +22,14 @@ namespace TicketSystem.API
             // allow cors 
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowAll", builder =>
-                {
-                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
-                });
+                options.AddPolicy("AngularUI",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:4200");
+                        builder.AllowAnyHeader();
+                        builder.AllowAnyMethod();
+                        builder.AllowCredentials();    
+                    });
             });
             var app = builder.Build();
 
@@ -35,12 +39,11 @@ namespace TicketSystem.API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            
             app.UseAuthorization();
-
-
             app.MapControllers();
 
+            app.UseCors("AngularUI");
             app.Run();
         }
     }
