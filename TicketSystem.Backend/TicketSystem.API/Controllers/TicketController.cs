@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using TicketSystem.API.Commands;
 using TicketSystem.API.Queries;
+using TicketSystem.Core.DTOs.Requests;
 
 namespace TicketSystem.API.Controllers
 {
@@ -15,6 +16,14 @@ namespace TicketSystem.API.Controllers
         public TicketsController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateTicket([FromBody] CreateTicketRequest createTicketRequest)
+        {
+            var command = new CreateTicketCommand(createTicketRequest);
+            var result = await _mediator.Send(command);
+            return Ok(result);
         }
 
         [HttpGet("{id}/handle")]
