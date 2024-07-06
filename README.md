@@ -12,9 +12,8 @@ TicketSystem is a .NET Core application for managing tickets using CQRS, MediatR
 5. [Setup and Configuration](#setup-and-configuration)
 6. [Running the Application](#running-the-application)
 7. [Example Usage](#example-usage)
-8. [Future Improvements](#future-improvements)
-9. [Contributors](#contributors)
-10. [License](#license)
+
+
 
 ## Overview
 
@@ -25,13 +24,14 @@ TicketSystem is designed to manage tickets with CRUD operations and includes fea
 - **CQRS and MediatR**: Commands and queries are separated, enhancing application structure.
 - **Repository Pattern**: Data access layer abstraction using interfaces for repositories.
 - **Background Service**: Automatic handling of overdue tickets using a background service.
-- **Static Data Endpoints**: APIs to retrieve lists of governorates, cities, and districts.
 
 ## Design Patterns
 
 - **Repository Pattern**: Provides a consistent way to access and manipulate data.
 - **Unit of Work**: Manages transactions across multiple repository operations.
 - **MediatR and CQRS**: Encourages separation of concerns by handling commands and queries independently.
+- **Factory DP**: For Register all Services In DI Container Across Application .
+  
 
 ## Technologies Used
 
@@ -50,7 +50,7 @@ TicketSystem is designed to manage tickets with CRUD operations and includes fea
 
 To run the TicketSystem locally:
 
-1. Clone the repository: `git clone https://github.com/yourusername/TicketSystem.git`
+1. Clone the repository: `git clone https://github.com/khaledibrahim1015/TicketSystem.git`
 2. Navigate to the project directory: `cd TicketSystem`
 3. Restore dependencies: `dotnet restore`
 4. Update database: `dotnet ef database update`
