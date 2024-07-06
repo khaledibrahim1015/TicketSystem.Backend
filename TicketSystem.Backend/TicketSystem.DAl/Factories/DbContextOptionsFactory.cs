@@ -6,27 +6,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TicketSystem.Core.Configuration;
+using TicketSystem.DAl.Data;
 
 namespace TicketSystem.DAl.Factories
 {
     public  class DbContextOptionsFactory
     {
         private readonly AppSettings _appSettings;
-
         public DbContextOptionsFactory( IOptions<AppSettings> appSettings )
         {
             _appSettings = appSettings.Value;
         }
-
         public DbContextOptions<TicketDbContext> CreateDbContextOptions()
         {
             DbContextOptionsBuilder<TicketDbContext> optionBuilder = new DbContextOptionsBuilder<TicketDbContext>();
-            optionBuilder.UseSqlServer(
-                                        _appSettings.ConnectionString );
+            optionBuilder.UseSqlServer( _appSettings.ConnectionString );
             return optionBuilder.Options;
-
         }
-
-
     }
 }
