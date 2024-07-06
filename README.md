@@ -1,7 +1,7 @@
 # TicketSystem.Backend
 # TicketSystem
 
-TicketSystem is a .NET Core application for managing tickets using CQRS, MediatR, and Repository Pattern.
+Ticket System is a .NET Core application for managing tickets using CQRS, MediatR, and Repository Pattern.
 
 ## Table of Contents
 
