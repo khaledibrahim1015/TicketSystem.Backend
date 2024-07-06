@@ -3,7 +3,7 @@ using TicketSystem.Core.DTOs.Responses;
 
 namespace TicketSystem.API.Queries
 {
-    public class GetAllTicketsPaginatedQuery : IRequest<IEnumerable<GetTicketResponse>>
+    public class GetAllTicketsPaginatedQuery : IRequest<GetTicketsPaginatedResponse>
     {
         public int PageNumber { get; }
         public int PageSize { get; }
