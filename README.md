@@ -128,14 +128,62 @@ To run the TicketSystem locally:
          return services;
      }
      
-### Creating a Ticket
 
-To create a ticket, send a POST request to `/api/tickets` with JSON body:
+## Endpoints
 
+The TicketSystem API provides several endpoints to manage tickets and retrieve static data.
+
+### 1. Create Ticket
+
+**Endpoint:** `POST /api/tickets`
+
+Creates a new ticket with the provided details.
+
+**Request Body:**
 ```json
 {
-  "phoneNumber": "123456789",
+  "phoneNumber": "1234567890",
   "governorate": "Governorate1",
   "city": "City1",
   "district": "District1"
 }
+
+### 2. Handle Ticket
+
+**Endpoint:**: GET /api/tickets/{id}/handle
+
+Marks a ticket as handled based on its ID.
+
+Response: Returns 200 OK if successful.
+
+
+### 3. Get Paginated Tickets
+
+**Endpoint:** `GET /api/tickets/paginated?pageNumber={pageNumber}&pageSize={pageSize}`
+
+Retrieves a paginated list of tickets.
+
+[
+  {
+    "id": 1,
+    "creationDate": "2024-07-06T10:00:00Z",
+    "phoneNumber": "1234567890",
+    "governorate": "Governorate1",
+    "city": "City1",
+    "district": "District1",
+    "isHandled": false,
+    "color": "yellow"
+  },
+  {
+    "id": 2,
+    "creationDate": "2024-07-06T10:15:00Z",
+    "phoneNumber": "0987654321",
+    "governorate": "Governorate2",
+    "city": "City2",
+    "district": "District2",
+    "isHandled": false,
+    "color": "green"
+  }
+]
+
+
