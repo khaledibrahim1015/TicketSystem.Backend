@@ -19,6 +19,14 @@ namespace TicketSystem.API
             builder.Services.AddServiceCollections(builder.Configuration);
             // Injecting Our MediatR In Our DI Conatiner 
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly));
+            // allow cors 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                });
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
