@@ -43,7 +43,7 @@ TicketSystem is designed to manage tickets with CRUD operations and includes fea
 ## Setup and Configuration
 
 1. **Database Configuration**: Update the database connection string in `appsettings.json`.
-2. **Dependency Injection**: Configure services  in `DependencyInjection.cs`. [Example Di](#example-Di)
+2. **Dependency Injection**: Configure services  in `DependencyInjection.cs`. [Example Usage](#Example-Usage)
 3. **AutoMapper Configuration**: Define AutoMapper profiles for mapping DTOs to domain models.
 
 ## Running the Application
