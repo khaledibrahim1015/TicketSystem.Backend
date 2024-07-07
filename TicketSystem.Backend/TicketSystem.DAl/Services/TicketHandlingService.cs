@@ -9,17 +9,28 @@ using TicketSystem.Core.Repositories;
 
 namespace TicketSystem.DAl.Services
 {
+    /// <summary>
+    /// Background service for handling ticket operations.
+    /// </summary>
     public class TicketHandlingService : BackgroundService
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<TicketHandlingService> _logger;
         private readonly TimeSpan _checkInterval = TimeSpan.FromMinutes(1);
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TicketHandlingService"/> class.
+        /// </summary>
+        /// <param name="serviceProvider">The service provider.</param>
+        /// <param name="logger">The logger.</param>
         public TicketHandlingService(IServiceProvider serviceProvider, ILogger<TicketHandlingService> logger)
         {
             _serviceProvider = serviceProvider;
             _logger = logger;
         }
+        /// <summary>
+        /// Executes the background service logic.
+        /// </summary>
+        /// <param name="stoppingToken">The cancellation token.</param>
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
