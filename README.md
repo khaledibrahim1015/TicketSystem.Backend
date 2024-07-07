@@ -12,8 +12,7 @@ Ticket System is a .NET Core application for managing tickets using CQRS, Mediat
 5. [Setup and Configuration](#setup-and-configuration)
 6. [Running the Application](#running-the-application)
 7. [Example Usage](#example-usage)
-
-
+8. [Validators](#validators)
 
 ## Overview
 
@@ -23,15 +22,14 @@ TicketSystem is designed to manage tickets with CRUD operations and includes fea
 
 - **CQRS and MediatR**: Commands and queries are separated, enhancing application structure.
 - **Repository Pattern**: Data access layer abstraction using interfaces for repositories.
-- **Background Service**: Automatic handling of overdue tickets using a background service.[Example BackgroundService](#example-BackgroundService)
+- **Background Service**: Automatic handling of overdue tickets using a background service.
 
 ## Design Patterns
 
 - **Repository Pattern**: Provides a consistent way to access and manipulate data.
 - **Unit of Work**: Manages transactions across multiple repository operations.
 - **MediatR and CQRS**: Encourages separation of concerns by handling commands and queries independently.
-- **Factory DP**: For Register all Services In DI Container Across Application .
-  
+- **Factory DP**: For Register all Services In DI Container Across Application.
 
 ## Technologies Used
 
@@ -43,8 +41,7 @@ TicketSystem is designed to manage tickets with CRUD operations and includes fea
 ## Setup and Configuration
 
 1. **Database Configuration**: Update the database connection string in `appsettings.json`.
-2. **Dependency Injection**: Configure services  in `DependencyInjection.cs`. [Example Usage](#Example-Usage)
-3. **AutoMapper Configuration**: Define AutoMapper profiles for mapping DTOs to domain models.
+2. **Dependency Injection**: Configure services in `DependencyInjection.cs`.
 
 ## Running the Application
 
@@ -55,7 +52,24 @@ To run the TicketSystem locally:
 3. Restore dependencies: `dotnet restore`
 4. Update database: `dotnet ef database update`
 5. Start the application: `dotnet run`
-## Example BackgroundService
+
+## Example Usage
+
+### Example BackgroundService
+
+The `TicketHandlingService` class demonstrates how overdue tickets are automatically handled in the background:
+
+```csharp
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using TicketSystem.Core.Repositories;
+
+namespace TicketSystem.DAl.Services
+{
     public class TicketHandlingService : BackgroundService
     {
         private readonly IServiceProvider _serviceProvider;
@@ -100,47 +114,40 @@ To run the TicketSystem locally:
             }
         }
     }
+}
 
-## Example Usage
- public static class DependencyInjection
- {
 
-     public static IServiceCollection AddServiceCollections (this IServiceCollection services , IConfiguration configuration)
-     {
-         // Configure AppSettings
-         services.Configure<AppSettings>(configuration.GetSection("AppSettings"));
-         // Register DbContext Using DbContextOptionsFactory 
-         services.AddSingleton<DbContextOptionsFactory>();
-         //  Register DbContext Using Factory 
-         services.AddScoped(serviceProvider =>
-         {
-             var OptionsFactory = serviceProvider.GetRequiredService<DbContextOptionsFactory>();
-             return new TicketDbContext(OptionsFactory.CreateDbContextOptions());
-         });
-         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-         //// Register other  services 
-         //services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-         //services.AddScoped<ITicketRepository , TicketRepository>();  
-         services.AddScoped<IUnitOfWork, UnitOfWork>();
+Validators
+CreateTicketRequest Validator
 
-         // add ticket handling as a backgroundservice 
-         services.AddHostedService<TicketHandlingService>();
-         return services;
-     }
-     
+The CreateTicketRequestValidator ensures that the incoming ticket creation requests are valid:
 
-## Endpoints
+public class CreateTicketRequestValidator : AbstractValidator<CreateTicketRequest>
+{
+    public CreateTicketRequestValidator()
+    {
+        RuleFor(x => x.PhoneNumber).NotEmpty().MaximumLength(20);
+        RuleFor(x => x.Governorate).NotEmpty().MaximumLength(50);
+        RuleFor(x => x.City).NotEmpty().MaximumLength(50);
+        RuleFor(x => x.District).NotEmpty().MaximumLength(50);
+    }
+}
+
+
+
+Endpoints
 
 The TicketSystem API provides several endpoints to manage tickets and retrieve static data.
+1. Create Ticket
 
-### 1. Create Ticket
-
-**Endpoint:** `POST /api/tickets`
+Endpoint: POST /api/tickets
 
 Creates a new ticket with the provided details.
 
-**Request Body:**
-```json
+Request Body:
+
+json
+
 {
   "phoneNumber": "1234567890",
   "governorate": "Governorate1",
@@ -148,20 +155,20 @@ Creates a new ticket with the provided details.
   "district": "District1"
 }
 
-### 2. Handle Ticket
+2. Handle Ticket
 
-**Endpoint:**: GET /api/tickets/{id}/handle
+Endpoint: GET /api/tickets/{id}/handle
 
 Marks a ticket as handled based on its ID.
 
 Response: Returns 200 OK if successful.
+3. Get Paginated Tickets
 
-
-### 3. Get Paginated Tickets
-
-**Endpoint:** `GET /api/tickets/paginated?pageNumber={pageNumber}&pageSize={pageSize}`
+Endpoint: GET /api/tickets/paginated?pageNumber={pageNumber}&pageSize={pageSize}
 
 Retrieves a paginated list of tickets.
+
+json
 
 [
   {
@@ -185,5 +192,3 @@ Retrieves a paginated list of tickets.
     "color": "green"
   }
 ]
-
-
