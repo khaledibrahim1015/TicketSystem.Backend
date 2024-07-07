@@ -59,15 +59,6 @@ To run the TicketSystem locally:
 
 The `TicketHandlingService` class demonstrates how overdue tickets are automatically handled in the background:
 
-```csharp
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using TicketSystem.Core.Repositories;
-
 namespace TicketSystem.DAl.Services
 {
     public class TicketHandlingService : BackgroundService
@@ -114,14 +105,14 @@ namespace TicketSystem.DAl.Services
             }
         }
     }
-}
 
 
-Validators
-CreateTicketRequest Validator
+### Validators
+#### CreateTicketRequest Validator
 
-The CreateTicketRequestValidator ensures that the incoming ticket creation requests are valid:
+The `CreateTicketRequestValidator` ensures that the incoming ticket creation requests are valid:
 
+```csharp
 public class CreateTicketRequestValidator : AbstractValidator<CreateTicketRequest>
 {
     public CreateTicketRequestValidator()
@@ -133,9 +124,9 @@ public class CreateTicketRequestValidator : AbstractValidator<CreateTicketReques
     }
 }
 
+```
 
-
-Endpoints
+### Endpoints
 
 The TicketSystem API provides several endpoints to manage tickets and retrieve static data.
 1. Create Ticket
@@ -145,7 +136,7 @@ Endpoint: POST /api/tickets
 Creates a new ticket with the provided details.
 
 Request Body:
-
+```
 json
 
 {
@@ -154,7 +145,7 @@ json
   "city": "City1",
   "district": "District1"
 }
-
+```
 2. Handle Ticket
 
 Endpoint: GET /api/tickets/{id}/handle
@@ -167,7 +158,7 @@ Response: Returns 200 OK if successful.
 Endpoint: GET /api/tickets/paginated?pageNumber={pageNumber}&pageSize={pageSize}
 
 Retrieves a paginated list of tickets.
-
+```
 json
 
 [
@@ -192,3 +183,4 @@ json
     "color": "green"
   }
 ]
+```
