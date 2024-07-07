@@ -2,12 +2,13 @@
 
 namespace TicketSystem.Core.Repositories
 {
-    public  interface IUnitOfWork
+    /// <summary>
+    /// Interface for unit of work.
+    /// </summary>
+    public interface IUnitOfWork
     {
-        //IBaseRepository<Ticket> Tickets { get; }
         ITicketRepository Tickets { get; }
         bool Complete();
         Task<bool> CompleteAsync();
-
     }
 }

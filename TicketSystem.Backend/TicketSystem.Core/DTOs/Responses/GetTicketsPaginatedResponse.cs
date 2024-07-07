@@ -1,14 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TicketSystem.Core.DTOs.Responses
+﻿namespace TicketSystem.Core.DTOs.Responses
 {
-    public  class GetTicketsPaginatedResponse
+    /// <summary>
+    /// Represents a paginated response for tickets.
+    /// </summary>
+    public class GetTicketsPaginatedResponse
     {
+        /// <summary>
+        /// Gets or sets the total count of tickets.
+        /// </summary>
         public int TotalCount { get; set; }
-        public IEnumerable<GetTicketResponse> Items { get; set; }
+
+        /// <summary>
+        /// Gets or sets the paginated items.
+        /// </summary>
+        public IEnumerable<GetTicketResponse> Items { get; set;}
     }
 }

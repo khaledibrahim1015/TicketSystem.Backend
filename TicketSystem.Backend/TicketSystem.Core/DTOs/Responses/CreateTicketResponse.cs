@@ -2,5 +2,8 @@
 
 namespace TicketSystem.Core.DTOs.Responses
 {
-    public  class CreateTicketResponse : Ticket { }
+    /// <summary>
+    /// Represents a response for creating a ticket.
+    /// </summary>
+    public class CreateTicketResponse : Ticket { }
 }

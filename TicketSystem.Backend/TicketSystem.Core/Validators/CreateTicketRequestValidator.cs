@@ -7,8 +7,11 @@ using System.Threading.Tasks;
 using TicketSystem.Core.DTOs.Requests;
 
 namespace TicketSystem.Core.Validators
-{
-    public  class CreateTicketRequestValidator : AbstractValidator<CreateTicketRequest>
+
+{    /// <summary>
+     /// Validator for CreateTicketRequest.
+     /// </summary>
+    public class CreateTicketRequestValidator : AbstractValidator<CreateTicketRequest>
     {
         public CreateTicketRequestValidator()
         {

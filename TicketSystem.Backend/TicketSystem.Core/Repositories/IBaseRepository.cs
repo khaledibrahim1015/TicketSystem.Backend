@@ -2,9 +2,12 @@
 
 namespace TicketSystem.Core.Repositories
 {
+    /// <summary>
+    /// Interface for base repository.
+    /// </summary>
+    /// <typeparam name="TEntity">The type of the entity.</typeparam>
     public interface IBaseRepository<TEntity> where TEntity : class
     {
-        // Sync Methods 
         IEnumerable<TEntity?> GetAll();
         TEntity? GetById(int id);
         bool Add(TEntity entity);
@@ -21,12 +24,10 @@ namespace TicketSystem.Core.Repositories
         int Count();
         int Count(Expression<Func<TEntity, bool>> criteria);
 
-        //  Async Methods 
         Task<IEnumerable<TEntity?>> GetAllAsync();
         Task<TEntity?> GetByIdAsync(int id);
         Task<bool> AddAsync(TEntity entity);
         Task<bool> DeleteRangeAsync(IEnumerable<TEntity> entities);
-
 
         Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> criteria);
         Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> criteria, string[] includes);
