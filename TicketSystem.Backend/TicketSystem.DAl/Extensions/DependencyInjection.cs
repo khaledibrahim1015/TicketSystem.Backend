@@ -1,8 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TicketSystem.Core.Configuration;
 using TicketSystem.Core.Repositories;
 using TicketSystem.Core.Repositories.Interfaces;
+using TicketSystem.Core.Validators;
 using TicketSystem.DAl.Data;
 using TicketSystem.DAl.Factories;
 using TicketSystem.DAl.Repositories;
@@ -33,6 +36,12 @@ namespace TicketSystem.DAl.Extensions
 
             // add ticket handling as a backgroundservice 
             services.AddHostedService<TicketHandlingService>();
+
+            // Register FluentValidation
+            services.AddValidatorsFromAssemblyContaining<CreateTicketRequestValidator>();
+
+            services.AddControllers()
+                    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateTicketRequestValidator>());
             return services;
         }
     }
